@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package payment;
+
+service PaymentService {
+    rpc CheckHealth (CheckHealthRequest) returns (CheckHealthResponse) {}
+}
+
+message CheckHealthRequest {}
+
+message CheckHealthResponse { bool status = 1; }

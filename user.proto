@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+    rpc CheckHealth (CheckHealthRequest) returns (CheckHealthResponse) {}
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc Register (RegisterRequest) returns (RegisterResponse) {}
+    rpc GetUserData (GetUserDataRequest) returns (GetUserDataResponse) {}
+    rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {}
+}
+
+message CheckHealthRequest {}
+message CheckHealthResponse { bool status = 1; }
+
+message LoginRequest { string email = 1; string password = 2; }
+message LoginResponse { bool success = 1; string code = 2; string token = 3; }
+
+message User {
+    string _id = 1;
+    optional string telegramId = 2;
+    optional string email = 3;
+    optional string first_name = 4;
+    optional string last_name = 5;
+    optional string sur_name = 6;
+    optional string username = 7;
+    optional date date_of_birth = 8;
+    optional string sex = 9;
+    optional string postindex = 10;
+    optional string phone = 11;
+    optional string photo_url = 12;
+    int32 active_currency_id = 13;
+    int32 active_asset_id = 14;
+    string language = 15;
+    int32 language_id = 16;
+    string referral_type = 17;
+    int32 referral_balance_usd = 18;
+    int32 referral_percent = 19;
+    bool is_banned = 20;
+    bool is_verified = 21;
+}
+
+message GetUserDataRequest { string user_id = 1; }
+message GetUserDataResponse { repeated User = 1; }
+
+message RefreshTokenRequest { string user_id = 1; }
+message RefreshTokenResponse { bool success = 1; string code = 2; string token = 3; }
+
+message RegisterRequest {
+    string email = 1;
+    string password = 2;
+    string first_name = 3;
+    string last_name = 4;
+    optional string surname = 5;
+    string date_of_birth = 6;
+    string sex = 7;
+    string postindex = 8;
+    optional string phone = 9;
+}
+
+message RegisterResponse { bool success = 1; string code = 2; string token = 3; }
