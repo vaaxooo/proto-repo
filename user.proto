@@ -18,7 +18,7 @@ message LoginResponse { bool success = 1; string code = 2; string token = 3; }
 
 message User {
     string _id = 1;
-    string telegramId = 2;
+    int32 telegramId = 2;
     string email = 3;
     string first_name = 4;
     string last_name = 5;
