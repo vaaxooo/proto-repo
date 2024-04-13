@@ -8,6 +8,7 @@ service UserService {
     rpc Register (RegisterRequest) returns (RegisterResponse) {}
     rpc GetUserData (GetUserDataRequest) returns (GetUserDataResponse) {}
     rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {}
+    rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {}
 }
 
 message CheckHealthRequest {}
@@ -57,5 +58,7 @@ message RegisterRequest {
     int32 index = 8;
     string phone = 9;
 }
-
 message RegisterResponse { bool success = 1; string code = 2; string token = 3; }
+
+message ChangePasswordRequest { string user_id = 1; string current_password = 2; string new_password = 3; string confirm_password = 4; }
+message ChangePasswordResponse { bool success = 1; string code = 2; }
