@@ -41,7 +41,7 @@ message User {
 }
 
 message GetUserDataRequest { string user_id = 1; }
-message GetUserDataResponse { repeated User user = 1; }
+message GetUserDataResponse { bool success = 1; string code = 2; User data = 1; }
 
 message RefreshTokenRequest { string user_id = 1; }
 message RefreshTokenResponse { bool success = 1; string code = 2; string token = 3; }
