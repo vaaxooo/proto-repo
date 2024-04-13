@@ -34,7 +34,7 @@ message User {
     string language = 15;
     int32 language_id = 16;
     string referral_type = 17;
-    int32 referral_balance_usd = 18;
+    int32 referral_balance = 18;
     int32 referral_percent = 19;
     bool is_banned = 20;
     bool is_verified = 21;
