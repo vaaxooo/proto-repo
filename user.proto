@@ -10,6 +10,8 @@ service UserService {
     rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {}
     rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {}
     rpc UpdateUserData (UpdateUserDataRequest) returns (UpdateUserDataResponse) {}
+    rpc RecoveryPassword (RecoveryPasswordRequest) returns (RecoveryPasswordResponse) {}
+    rpc RecoveryPasswordConfirm (RecoveryPasswordConfirmRequest) returns (RecoveryPasswordConfirmResponse) {}
 }
 
 message CheckHealthRequest {}
@@ -75,3 +77,9 @@ message UpdateUserDataRequest {
     string phone = 8;
 }
 message UpdateUserDataResponse { bool success = 1; string code = 2; }
+
+message RecoveryPasswordRequest { string email = 1; }
+message RecoveryPasswordResponse { bool success = 1; string code = 2; }
+
+message RecoveryPasswordConfirmRequest { string email = 1; string recovery_code = 2; string new_password = 3; string confirm_password = 4; }
+message RecoveryPasswordConfirmResponse { bool success = 1; string code = 2; }
