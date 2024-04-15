@@ -12,6 +12,16 @@ service UserService {
     rpc UpdateUserData (UpdateUserDataRequest) returns (UpdateUserDataResponse) {}
     rpc RecoveryPassword (RecoveryPasswordRequest) returns (RecoveryPasswordResponse) {}
     rpc RecoveryPasswordConfirm (RecoveryPasswordConfirmRequest) returns (RecoveryPasswordConfirmResponse) {}
+
+    // BACK OFFICE
+    rpc LoginBackOffice (LoginBackOfficeRequest) returns (LoginBackOfficeResponse) {}
+    rpc GetUserDataBackOffice (GetUserDataBackOfficeRequest) returns (GetUserDataBackOfficeResponse) {}
+    rpc RefreshTokenBackOffice (RefreshTokenBackOfficeRequest) returns (RefreshTokenBackOfficeResponse) {}
+    rpc GetRolesList (GetRolesListRequest) returns (GetRolesListResponse) {}
+    rpc GetRoleById (GetRoleByIdRequest) returns (GetRoleByIdResponse) {}
+    rpc CreateRole (CreateRoleRequest) returns (CreateRoleResponse) {}
+    rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse) {}
+    rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse) {}
 }
 
 message CheckHealthRequest {}
@@ -19,6 +29,23 @@ message CheckHealthResponse { bool status = 1; }
 
 message LoginRequest { string email = 1; string password = 2; }
 message LoginResponse { bool success = 1; string code = 2; string token = 3; }
+
+message LoginBackOfficeRequest { string email = 1; string password = 2; }
+message LoginBackOfficeResponse { bool success = 1; string code = 2; string token = 3; }
+
+message Admin {
+    string _id = 1;
+    string email = 2;
+    string locale = 3;
+    string locale_id = 4;
+    string role = 5;
+    string permissions = 6;
+}
+message GetUserDataBackOfficeRequest { string user_id = 1; }
+message GetUserDataBackOfficeResponse { bool success = 1; string code = 2; Admin data = 3; }
+
+message RefreshTokenBackOfficeRequest { string user_id = 1; }
+message RefreshTokenBackOfficeResponse { bool success = 1; string code = 2; string token = 3; }
 
 message User {
     string _id = 1;
@@ -83,3 +110,38 @@ message RecoveryPasswordResponse { bool success = 1; string code = 2; }
 
 message RecoveryPasswordConfirmRequest { string email = 1; string recovery_code = 2; string new_password = 3; string confirm_password = 4; }
 message RecoveryPasswordConfirmResponse { bool success = 1; string code = 2; }
+
+message Permission {
+    string name = 1;
+    string description = 2;
+}
+
+message Role {
+    string _id = 1;
+    string role = 2;
+    string description = 3;
+    repeated string permissions = 4;
+    repeated Permission default_permissions = 5;
+}
+
+message GetRolesListRequest {}
+message GetRolesListResponse { bool success = 1; string code = 2; repeated Role data = 3; }
+
+message getRoleByIdRequest { string id = 1; }
+message getRoleByIdResponse { bool success = 1; string code = 2; Role data = 3; }
+
+message CreateRoleRequest {
+    string role = 1;
+    repeated string permissions = 2;
+}
+message CreateRoleResponse { bool success = 1; string code = 2; repeated Role data = 3; }
+
+message UpdateRoleRequest {
+    string id = 1;
+    string role = 2;
+    repeated string permissions = 3;
+}
+message UpdateRoleResponse { bool success = 1; string code = 2; repeated Role data = 3; }
+
+message DeleteRoleRequest { string id = 1; }
+message DeleteRoleResponse { bool success = 1; string code = 2; }
