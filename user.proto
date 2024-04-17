@@ -12,16 +12,27 @@ service UserService {
     rpc UpdateUserData (UpdateUserDataRequest) returns (UpdateUserDataResponse) {}
     rpc RecoveryPassword (RecoveryPasswordRequest) returns (RecoveryPasswordResponse) {}
     rpc RecoveryPasswordConfirm (RecoveryPasswordConfirmRequest) returns (RecoveryPasswordConfirmResponse) {}
+    rpc GetLocales (GetLocalesRequest) returns (GetLocalesResponse) {}
 
     // BACK OFFICE
     rpc LoginBackOffice (LoginBackOfficeRequest) returns (LoginBackOfficeResponse) {}
     rpc GetUserDataBackOffice (GetUserDataBackOfficeRequest) returns (GetUserDataBackOfficeResponse) {}
     rpc RefreshTokenBackOffice (RefreshTokenBackOfficeRequest) returns (RefreshTokenBackOfficeResponse) {}
     rpc GetRolesList (GetRolesListRequest) returns (GetRolesListResponse) {}
-    rpc GetRoleById (GetRoleByIdRequest) returns (GetRoleByIdResponse) {}
+    rpc GetRoleById(GetRoleByIdRequest) returns (GetRoleByIdResponse) {}
     rpc CreateRole (CreateRoleRequest) returns (CreateRoleResponse) {}
     rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse) {}
     rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse) {}
+    rpc GetAdminsList (GetAdminsListRequest) returns (GetAdminsListResponse) {}
+    rpc GetAdminById (GetAdminByIdRequest) returns (GetAdminByIdResponse) {}
+    rpc CreateAdmin (CreateAdminRequest) returns (CreateAdminResponse) {}
+    rpc UpdateAdmin (UpdateAdminRequest) returns (UpdateAdminResponse) {}
+    rpc DeleteAdmin (DeleteAdminRequest) returns (DeleteAdminResponse) {}
+    rpc GetLocalesList (GetLocalesListRequest) returns (GetLocalesListResponse) {}
+    rpc GetLocaleById (GetLocaleByIdRequest) returns (GetLocaleByIdResponse) {}
+    rpc CreateLocale (CreateLocaleRequest) returns (CreateLocaleResponse) {}
+    rpc UpdateLocale (UpdateLocaleRequest) returns (UpdateLocaleResponse) {}
+    rpc DeleteLocale (DeleteLocaleRequest) returns (DeleteLocaleResponse) {}
 }
 
 message CheckHealthRequest {}
@@ -62,13 +73,12 @@ message User {
     string photo_url = 12;
     int32 active_currency_id = 13;
     int32 active_asset_id = 14;
-    string language = 15;
-    int32 language_id = 16;
-    string referral_type = 17;
-    int32 referral_balance = 18;
-    int32 referral_percent = 19;
-    bool is_banned = 20;
-    bool is_verified = 21;
+    string locale = 15;
+    string referral_type = 16;
+    int32 referral_balance = 17;
+    int32 referral_percent = 18;
+    bool is_banned = 19;
+    bool is_verified = 20;
 }
 
 message GetUserDataRequest { string user_id = 1; }
@@ -87,6 +97,7 @@ message RegisterRequest {
     string sex = 7;
     int32 index = 8;
     string phone = 9;
+    string locale = 10;
 }
 message RegisterResponse { bool success = 1; string code = 2; string token = 3; }
 
@@ -102,6 +113,7 @@ message UpdateUserDataRequest {
     string sex = 6;
     int32 index = 7;
     string phone = 8;
+    string locale = 9;
 }
 message UpdateUserDataResponse { bool success = 1; string code = 2; }
 
@@ -121,27 +133,103 @@ message Role {
     string role = 2;
     string description = 3;
     repeated string permissions = 4;
-    repeated Permission default_permissions = 5;
+    repeated string default_permissions = 5;
 }
 
 message GetRolesListRequest {}
 message GetRolesListResponse { bool success = 1; string code = 2; repeated Role data = 3; }
 
-message getRoleByIdRequest { string id = 1; }
-message getRoleByIdResponse { bool success = 1; string code = 2; Role data = 3; }
+message GetRoleByIdRequest { string id = 1; }
+message GetRoleByIdResponse { bool success = 1; string code = 2; Role data = 3; }
 
 message CreateRoleRequest {
     string role = 1;
     repeated string permissions = 2;
 }
-message CreateRoleResponse { bool success = 1; string code = 2; repeated Role data = 3; }
+message CreateRoleResponse { bool success = 1; string code = 2; Role data = 3; }
 
 message UpdateRoleRequest {
     string id = 1;
     string role = 2;
     repeated string permissions = 3;
 }
-message UpdateRoleResponse { bool success = 1; string code = 2; repeated Role data = 3; }
+message UpdateRoleResponse { bool success = 1; string code = 2; Role data = 3; }
 
 message DeleteRoleRequest { string id = 1; }
 message DeleteRoleResponse { bool success = 1; string code = 2; }
+
+
+message Pagination {
+    int32 total_items = 1;
+    int32 total_pages = 2;
+    int32 page = 3;
+}
+
+message AdminList {
+    repeated Admin items = 1;
+    Pagination pagination = 2;
+}
+message GetAdminsListRequest { int32 page = 1; int32 limit = 2; string search = 3; }
+message GetAdminsListResponse { bool success = 1; string code = 2; AdminList data = 3; }
+
+message GetAdminByIdRequest { string id = 1; }
+message GetAdminByIdResponse { bool success = 1; string code = 2; Admin data = 3; }
+
+message CreateAdminRequest {
+    string email = 1;
+    string password = 2;
+    string locale = 3;
+    string locale_id = 4;
+    string role = 5;
+}
+message CreateAdminResponse { bool success = 1; string code = 2; Admin data = 3; }
+
+message UpdateAdminRequest {
+    string id = 1;
+    string email = 2;
+    string locale = 3;
+    string locale_id = 4;
+    string role = 5;
+}
+message UpdateAdminResponse { bool success = 1; string code = 2; Admin data = 3; }
+
+message DeleteAdminRequest { string id = 1; }
+message DeleteAdminResponse { bool success = 1; string code = 2; }
+
+message Locale {
+    string _id = 1;
+    string name = 2;
+    string code = 3;
+    bool is_active = 4;
+}
+message LocaleList {
+    repeated Locale items = 1;
+    Pagination pagination = 2;
+}
+
+message GetLocalesListRequest { int32 page = 1; int32 limit = 2; string search = 3; }
+message GetLocalesListResponse { bool success = 1; string code = 2; LocaleList data = 3; }
+
+message GetLocaleByIdRequest { string id = 1; }
+message GetLocaleByIdResponse { bool success = 1; string code = 2; Locale data = 3; }
+
+message CreateLocaleRequest {
+    string name = 1;
+    string code = 2;
+    bool is_active = 3;
+}
+message CreateLocaleResponse { bool success = 1; string code = 2; Locale data = 3; }
+
+message UpdateLocaleRequest {
+    string id = 1;
+    string name = 2;
+    string code = 3;
+    bool is_active = 4;
+}
+message UpdateLocaleResponse { bool success = 1; string code = 2; Locale data = 3; }
+
+message DeleteLocaleRequest { string id = 1; }
+message DeleteLocaleResponse { bool success = 1; string code = 2; }
+
+message GetLocalesRequest {}
+message GetLocalesResponse { bool success = 1; string code = 2; repeated Locale data = 3; }
